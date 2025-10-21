@@ -37,7 +37,7 @@ const Navbar = () => {
         bg-[var(--color-primary)] text-[var(--color-text)]`}
             >
                 <div className="flex items-center justify-between p-4 border-b border-[var(--color-accent)]">
-                    <span className="text-xl font-bold text-[var(--color-primary)]">ShopCart</span>
+                    <span className="text-xl font-bold text-[var(--color-accent)]">ShopCart</span>
                     <button onClick={() => setMobileMenuOpen(false)}>
                         <X size={24} />
                     </button>
@@ -50,28 +50,6 @@ const Navbar = () => {
                     <button onClick={() => handleNavigate('/products')} className="w-full text-left block py-2 px-4 rounded hover:opacity-80 bg-[var(--color-surface)]">
                         Products
                     </button>
-
-                    {user ? (
-                        <>
-                            <button
-                                onClick={() => {
-                                    logout();
-                                    navigate('/login');
-                                    setMobileMenuOpen(false);
-                                }}
-                                className="w-full text-left py-2 px-4 rounded hover:opacity-80 bg-[var(--color-surface)]"
-                            >
-                                Logout
-                            </button>
-                        </>
-                    ) : (
-                        <button
-                            onClick={() => handleNavigate('/login')}
-                            className="w-full text-left block py-2 px-4 rounded hover:opacity-80 bg-[var(--color-surface)]"
-                        >
-                            Login
-                        </button>
-                    )}
                 </nav>
             </div>
 

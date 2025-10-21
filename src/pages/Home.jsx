@@ -91,8 +91,8 @@ const HomePage = () => {
       {/* Featured Products Section */}
       <div className="w-full max-w-7xl mx-auto py-20 px-6">
         <h2 className="text-4xl font-bold mb-12 text-center">Featured Products</h2>
-        {loading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {loading ? ( // Tampilan skeleton saat loading
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
             {[...Array(4)].map((_, i) => (
               <div key={i} className="rounded-2xl border animate-pulse" style={{ backgroundColor: "var(--color-surface)", borderColor: "var(--color-accent)" }}>
                 <div className="h-56 rounded-t-2xl" style={{ backgroundColor: colors.secondary }}></div>
@@ -104,8 +104,8 @@ const HomePage = () => {
               </div>
             ))}
           </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        ) : ( // Tampilan produk setelah data dimuat
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
             {featuredProducts.map((product) => (
               <div
                 key={product.id}
