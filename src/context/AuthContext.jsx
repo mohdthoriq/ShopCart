@@ -36,33 +36,33 @@ const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = (username, password) =>
+  const login = (email, password) =>
     new Promise((resolve, reject) => {
       const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const userByUsername = users.find(u => u.username === shiftString(username));
+      const userByEmail = users.find(u => u.email === shiftString(email));
 
-      if (!userByUsername) {
+      if (!userByEmail) {
         // User tidak ditemukan
         reject('USER_NOT_FOUND');
-      } else if (userByUsername.password !== shiftString(password)) {
+      } else if (userByEmail.password !== shiftString(password)) {
         // Password salah
         reject('INVALID_PASSWORD');
       } else {
         // Login berhasil
-        const userData = { id: userByUsername.id, username: unshiftString(userByUsername.username), name: unshiftString(userByUsername.name) };
+        const userData = { id: userByEmail.id, username: unshiftString(userByEmail.username), email: unshiftString(userByEmail.email) };
         setUser(userData);
         localStorage.setItem('loggedInUser', JSON.stringify(userData)); // Simpan data pengguna
         resolve(true);
       }
     });
 
-  const register = (name, username, password) => {
+  const register = (username, email, password) => {
     const users = JSON.parse(localStorage.getItem('users') || '[]');
-    if (users.some(u => u.username === shiftString(username))) return false;
+    if (users.some(u => u.email === shiftString(email))) return false;
     const newUser = {
       id: Date.now(),
-      name: shiftString(name),
       username: shiftString(username),
+      email: shiftString(email),
       password: shiftString(password)
     };
     localStorage.setItem('users', JSON.stringify([...users, newUser]));

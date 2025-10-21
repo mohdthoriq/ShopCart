@@ -25,7 +25,7 @@ const Navbar = () => {
             {/* Overlay untuk sidebar mobile */}
             {mobileMenuOpen && (
                 <div
-                    className="fixed inset-0 z-50 bg-black bg-opacity-50"
+                    className="fixed inset-0 z-50 bg-black/40 backdrop-blur-md bg-opacity-50"
                     onClick={() => setMobileMenuOpen(false)}
                 />
             )}
@@ -84,7 +84,7 @@ const Navbar = () => {
                     <div className="flex items-center space-x-4">
                         {user ? (
                             <>
-                                <span className="hidden md:inline">Hi, {user.name}</span>
+                                <span className="hidden md:inline">Hi, {user.username}</span>
                                 <button
                                     onClick={() => setSidebarOpen(true)}
                                     className="p-2 rounded-full hover:opacity-80 bg-[var(--color-surface)]"

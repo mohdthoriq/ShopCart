@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useTheme } from "../context/ThemeProvider";
 import { Search, Funnel, ChevronDown } from "lucide-react";
 import ProductCard from "../components/ProductCard";
+import ErrorDisplay from "../components/ErrorDisplay";
 
 const ProductSkeleton = () => {
   const { colors, theme } = useTheme();
@@ -30,22 +31,24 @@ const ProductsPage = () => {
   const [filtersVisible, setFiltersVisible] = useState(false);
   const { colors } = useTheme();
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("https://fakestoreapi.com/products");
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
-        }
-        const data = await response.json();
-        setProducts(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+  const fetchProducts = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch("https://fakestoreapi.com/products");
+      if (!response.ok) {
+        throw new Error("Failed to fetch products");
       }
-    };
+      const data = await response.json();
+      setProducts(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchProducts();
   }, []);
 
@@ -70,7 +73,7 @@ const ProductsPage = () => {
   }, [products, searchTerm, category, sort]);
 
   if (error) {
-    return <div className="text-center text-red-500 p-8">Error: {error}</div>;
+    return <ErrorDisplay message={error} onRetry={fetchProducts} />;
   }
 
   return (
@@ -96,14 +99,14 @@ const ProductsPage = () => {
         </div>
         {filtersVisible && (
           <div className="flex justify-center">
-            <div className="flex flex-row flex-wrap justify-center gap-4 mt-4 p-4 rounded-lg transition-all" style={{ backgroundColor: "var(--color-accent)" }}>
-              <div>
+            <div className="flex flex-row flex-wrap justify-center items-center gap-4 mt-4 p-4 rounded-lg transition-all" style={{ backgroundColor: "var(--color-accent)" }}>
+              <div className="flex-1 min-w-[150px] max-w-[200px]">
                 <label className="block text-sm font-medium mb-2 text-white">Category</label>
                 <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full p-2 rounded border outline-none" style={{ borderColor: "var(--color-primary)", backgroundColor: "var(--color-surface)", color: "var(--color-text)" }}>
                   {categories.map((cat) => <option key={cat} value={cat}>{cat === "all" ? "All Categories" : cat}</option>)}
                 </select>
               </div>
-              <div>
+              <div className="flex-1 min-w-[150px] max-w-[200px]">
                 <label className="block text-sm font-medium mb-2 text-white">Sort By</label>
                 <select value={sort} onChange={(e) => setSort(e.target.value)} className="w-full p-2 rounded border outline-none" style={{ borderColor: "var(--color-primary)", backgroundColor: "var(--color-surface)", color: "var(--color-text)" }}>
                   <option value="default">Default</option>
@@ -117,11 +120,11 @@ const ProductsPage = () => {
       </div>
 
       {loading ? (
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 min-[390px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
           {[...Array(20)].map((_, i) => <ProductSkeleton key={i} />)}
         </div>
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 min-[390px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
           {filteredAndSortedProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

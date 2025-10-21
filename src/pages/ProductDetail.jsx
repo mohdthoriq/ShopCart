@@ -4,6 +4,7 @@ import { useTheme } from "../context/ThemeProvider";
 import { useCart } from "../context/CartContext";
 import { useNotification } from "../context/NotificationContext";
 import { ShoppingCart, ArrowLeft, Star } from "lucide-react";
+import ErrorDisplay from "../components/ErrorDisplay";
 
 const ProductDetailSkeleton = () => {
   const { colors } = useTheme();
@@ -36,23 +37,24 @@ const ProductDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(`https://fakestoreapi.com/products/${id}`);
-        if (!response.ok) {
-          throw new Error("Product not found");
-        }
-        const data = await response.json();
-        setProduct(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+  const fetchProduct = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`https://fakestoreapi.com/products/${id}`);
+      if (!response.ok) {
+        throw new Error("Product not found");
       }
-    };
+      const data = await response.json();
+      setProduct(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchProduct();
   }, [id]);
 
@@ -69,10 +71,7 @@ const ProductDetailPage = () => {
 
   if (error || !product) {
     return (
-      <div className="container mx-auto p-6 text-center">
-        <h1 className="text-2xl font-bold text-red-500">Error: {error || "Product could not be loaded."}</h1>
-        <Link to="/products" className="text-blue-500 hover:underline mt-4 inline-block">Go back to products</Link>
-      </div>
+      <ErrorDisplay message={error || "Product could not be loaded."} onRetry={fetchProduct} />
     );
   }
 

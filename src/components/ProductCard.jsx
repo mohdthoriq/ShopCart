@@ -31,30 +31,30 @@ const ProductCard = ({ product }) => {
     >
       <Link to={`/products/${product.id}`} className="block">
         <img
-          className="w-full h-48 object-contain p-4"
+          className="w-full h-36 sm:h-48 object-contain p-2 sm:p-4 transition-all"
           src={product.image}
           alt={product.title}
         />
       </Link>
 
-      <div className="p-4 flex flex-col flex-grow">
+      <div className="p-2 sm:p-4 flex flex-col flex-grow">
         <h3
-          className="font-semibold text-lg truncate flex-grow transition-colors duration-300"
+          className="font-semibold text-sm sm:text-lg truncate flex-grow transition-colors duration-300"
           style={{ color: textColor }}
         >
           {product.title}
         </h3>
 
         <p
-          className="capitalize mb-2 transition-opacity duration-300"
+          className="capitalize text-xs sm:text-sm mb-2 transition-opacity duration-300"
           style={{ opacity: 0.8, color: textColor }}
         >
           {product.category}
         </p>
 
-        <div className="flex items-center justify-between mt-auto">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between mt-auto gap-2">
           <span
-            className="font-bold text-xl transition-colors duration-300"
+            className="font-bold text-lg sm:text-xl transition-colors duration-300"
             style={{ color: priceColor }}
           >
             ${product.price.toFixed(2)}
@@ -62,21 +62,15 @@ const ProductCard = ({ product }) => {
 
           <button
             onClick={handleAddToCart}
-            className="p-2 rounded-full transition-all duration-300"
+            className="w-full sm:w-auto p-2 rounded-lg transition-all duration-300 flex items-center justify-center gap-2"
             style={{
-              backgroundColor: hoverColor + "33", // versi transparan biar lembut
-              color: priceColor,
-              fontSize: "14px",
+              backgroundColor: colors.primary,
+              color: "var(--color-on-primary)",
               fontWeight: "bold",
             }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.backgroundColor = hoverColor)
-            }
-            onMouseLeave={(e) =>
-              (e.currentTarget.style.backgroundColor = hoverColor + "33")
-            }
           >
-             Add to Cart
+            <ShoppingCart size={16} />
+            <span className="sm:hidden">Add</span>
           </button>
         </div>
       </div>

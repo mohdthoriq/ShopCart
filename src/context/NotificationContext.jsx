@@ -23,7 +23,7 @@ export const NotificationProvider = ({ children }) => {
       {children}
       {notification && (
         <div
-          className="fixed top-10 right-5 p-4 rounded-lg shadow-lg text-white z-50 transition-all"
+          className="fixed top-5 left-1/2 -translate-x-1/2 w-11/12 max-w-sm md:w-auto md:top-15 md:right-0 md:left-auto md:transform-none p-3 md:p-4 rounded-lg shadow-lg text-white z-50 transition-all text-sm text-center md:text-left"
           style={{ backgroundColor: notification.type === 'success' ? colors.primary : colors.danger }}
         >
           {notification.message}

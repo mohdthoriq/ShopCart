@@ -4,6 +4,7 @@ import { ShoppingCart, Eye } from "lucide-react";
 import { useTheme } from "../context/ThemeProvider";
 import { useAuth } from "../context/AuthContext";
 import { useNotification } from "../context/NotificationContext";
+import ErrorDisplay from "../components/ErrorDisplay";
 
 const HomePage = () => {
   const { colors, theme } = useTheme();
@@ -12,24 +13,27 @@ const HomePage = () => {
   const { showNotification } = useNotification();
   const [featuredProducts, setFeaturedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchFeaturedProducts = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('https://fakestoreapi.com/products?limit=4');
+      if (!response.ok) {
+        throw new Error('Failed to fetch featured products');
+      }
+      const data = await response.json();
+      setFeaturedProducts(data);
+    } catch (err) {
+      setError(err.message);
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchFeaturedProducts = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch('https://fakestoreapi.com/products?limit=4');
-        if (!response.ok) {
-          throw new Error('Failed to fetch featured products');
-        }
-        const data = await response.json();
-        setFeaturedProducts(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchFeaturedProducts();
   }, []);
 
@@ -91,8 +95,10 @@ const HomePage = () => {
       {/* Featured Products Section */}
       <div className="w-full max-w-7xl mx-auto py-20 px-6">
         <h2 className="text-4xl font-bold mb-12 text-center">Featured Products</h2>
-        {loading ? ( // Tampilan skeleton saat loading
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+        {error ? (
+          <ErrorDisplay message={error} onRetry={fetchFeaturedProducts} />
+        ) : loading ? ( // Tampilan skeleton saat loading
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[...Array(4)].map((_, i) => (
               <div key={i} className="rounded-2xl border animate-pulse" style={{ backgroundColor: "var(--color-surface)", borderColor: "var(--color-accent)" }}>
                 <div className="h-56 rounded-t-2xl" style={{ backgroundColor: colors.secondary }}></div>
@@ -105,7 +111,7 @@ const HomePage = () => {
             ))}
           </div>
         ) : ( // Tampilan produk setelah data dimuat
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {featuredProducts.map((product) => (
               <div
                 key={product.id}

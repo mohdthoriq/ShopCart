@@ -7,7 +7,7 @@ import useNotification from "../hooks/useNotification";
 
 const LoginPage = () => {
     const [isLogin, setIsLogin] = useState(true);
-    const [formData, setFormData] = useState({ name: "", username: "", password: "" });
+    const [formData, setFormData] = useState({ username: "", email: "", password: "" });
     const [isLoading, setIsLoading] = useState(false);
     const { colors, theme } = useTheme();
     const { user, login, register } = useAuth();
@@ -26,25 +26,25 @@ const LoginPage = () => {
         try {
             if (isLogin) {
                 try {
-                    await login(formData.username, formData.password);
+                    await login(formData.email, formData.password);
                     showNotification("Login successful!", "success");
                 } catch (error) {
                     if (error === 'USER_NOT_FOUND') {
-                        showNotification("Username not found, please register.", "error");
+                        showNotification("Email not found, please register.", "error");
                         setIsLoading(true)
                         setIsLogin(false);
                     } else {
-                        showNotification("Invalid username or password", "error");
+                        showNotification("Invalid email or password", "error");
                     }
                 }
             } else {
-                if (formData.name && formData.username && formData.password) {
-                    if (register(formData.name, formData.username, formData.password)) {
+                if (formData.username && formData.email && formData.password) {
+                    if (register(formData.username, formData.email, formData.password)) {
                         showNotification("Registration successful! Please login.", "success");
                         setIsLogin(true);
-                        setFormData({ name: "", username: "", password: "" });
+                        setFormData({ username: "", email: "", password: "" });
                     } else {
-                        showNotification("Username already exists", "error");
+                        showNotification("Email already exists", "error");
                     }
                 } else {
                     showNotification("All fields are required", "error");
@@ -92,12 +92,12 @@ const LoginPage = () => {
                 <form onSubmit={handleSubmit} className="space-y-4">
                     {!isLogin && (
                         <div>
-                            <label className="block mb-1">Full Name</label>
+                            <label className="block mb-1">Username</label>
                             <input
                                 type="text"
-                                value={formData.name}
+                                value={formData.username}
                                 onChange={(e) =>
-                                    setFormData({ ...formData, name: e.target.value })
+                                    setFormData({ ...formData, username: e.target.value })
                                 }
                                 className="w-full p-3 rounded-lg outline-none transition"
                                 style={{
@@ -110,12 +110,12 @@ const LoginPage = () => {
                         </div>
                     )}
                     <div>
-                        <label className="block mb-1">Username</label>
+                        <label className="block mb-1">Email</label>
                         <input
-                            type="text"
-                            value={formData.username}
+                            type="email"
+                            value={formData.email}
                             onChange={(e) =>
-                                setFormData({ ...formData, username: e.target.value })
+                                setFormData({ ...formData, email: e.target.value })
                             }
                             className="w-full p-3 rounded-lg outline-none transition"
                             style={{
@@ -167,7 +167,7 @@ const LoginPage = () => {
                     <button
                         onClick={() => {
                             setIsLogin(!isLogin);
-                            setFormData({ name: "", username: "", password: "" });
+                            setFormData({ username: "", email: "", password: "" });
                         }}
                         className="font-medium hover:underline transition"
                         style={{ color: colors.primary }}
