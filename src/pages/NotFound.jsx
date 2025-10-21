@@ -7,16 +7,14 @@ const NotFoundPage = () => {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center p-6 transition-colors duration-300"
-      style={{
-        backgroundColor: "var(--color-bg)",
-        color: colors.text,
-      }}
+      className="fixed inset-0 bg-red-500/20 backdrop-blur-md bg-opacity-70 z-[9999] flex flex-col items-center justify-center text-white p-6"
+      style={{ backdropFilter: "blur(4px)" }}
     >
       <div
         className="rounded-2xl shadow-lg p-10 w-full max-w-md text-center transition-all duration-300"
         style={{
           backgroundColor: "var(--color-surface)",
+          color: colors.text,
           boxShadow:
             theme === "light"
               ? "0 6px 20px rgba(0,0,0,0.1)"
@@ -26,16 +24,16 @@ const NotFoundPage = () => {
         <AlertTriangle
           size={72}
           className="mx-auto mb-5"
-          style={{ color: colors.primary }}
+          style={{ color: colors.danger }}
         />
         <h1
           className="text-5xl font-extrabold mb-2 tracking-wide"
-          style={{ color: colors.primary }}
+          style={{ color: colors.danger }}
         >
           404
         </h1>
         <h2 className="text-2xl font-semibold mb-3">Page Not Found</h2>
-        <p className="mb-8 opacity-80">
+        <p className="mb-8 opacity-80 text-red-500">
           The page you're looking for doesn’t exist or has been moved.
         </p>
         <Link

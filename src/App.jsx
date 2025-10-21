@@ -1,12 +1,14 @@
 import { Suspense } from 'react';
 import './App.css'
 import Navbar from './components/Navbar';
-import { Navigate, Route, Router, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes, Outlet } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import ProductsPage from './pages/Products';
 import CartPage from './pages/Cart';
 import CheckoutPage from './pages/Checkout';
 import LoginPage from './pages/Login';
+import HomePage from './pages/Home';
+import ProductDetailPage from './pages/ProductDetail';
 import NotFoundPage from './pages/NotFound'; 
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ThemeProvider, useTheme } from './context/ThemeProvider';
@@ -26,7 +28,7 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-const AppContent = () => {
+const AppLayout = () => {
   const { theme } = useTheme(); // ganti ini
 
   return (
@@ -38,55 +40,25 @@ const AppContent = () => {
       }}
     >
       <Navbar />
-      <main>
-        <Suspense
-          fallback={
-            <div className="min-h-screen flex items-center justify-center">
-              Loading...
-            </div>
-          }
-        >
-          <Routes>
-            <Route path="/" element={<Navigate to="/products" />} />
-            <Route
-              path="/products"
-              element={
-                <ErrorBoundary>
-                  <ProductsPage />
-                </ErrorBoundary>
-              }
-            />
-            <Route
-              path="/cart"
-              element={
-                <ErrorBoundary>
-                  <CartPage />
-                </ErrorBoundary>
-              }
-            />
-            <Route
-              path="/checkout"
-              element={
-                <ProtectedRoute>
-                  <CheckoutPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/login" element={<LoginPage />} />
-          </Routes>
-        </Suspense>
-      </main>
+      <main><Outlet /></main>
     </div>
   );
 };
 
 export default function App() {
   return (
-    <Routes>
-      {/* Rute yang menggunakan layout utama (dengan Navbar) */}
-      <Route path="/*" element={<AppContent />} />
-      {/* Rute yang berdiri sendiri (tanpa Navbar) */}
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route element={<AppLayout />}>
+          <Route path="/products" element={<ErrorBoundary><ProductsPage /></ErrorBoundary>} />
+          <Route path="/cart" element={<ErrorBoundary><CartPage /></ErrorBoundary>} />
+          <Route path="/products/:id" element={<ProtectedRoute><ProductDetailPage /></ProtectedRoute>} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/checkout" element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>} />
+        </Route>
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </Suspense>
   );
 }

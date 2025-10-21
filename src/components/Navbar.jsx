@@ -44,6 +44,9 @@ const Navbar = () => {
                 </div>
 
                 <nav className="p-4 space-y-2">
+                    <button onClick={() => handleNavigate('/')} className="w-full text-left block py-2 px-4 rounded hover:opacity-80 bg-[var(--color-surface)]">
+                        Home
+                    </button>
                     <button onClick={() => handleNavigate('/products')} className="w-full text-left block py-2 px-4 rounded hover:opacity-80 bg-[var(--color-surface)]">
                         Products
                     </button>
@@ -90,6 +93,9 @@ const Navbar = () => {
                         <h1 className="text-2xl font-bold text-[var(--color-primary)]">ShopCart</h1>
 
                         <nav className="hidden md:flex space-x-6">
+                            <button onClick={() => handleNavigate('/')} className="hover:text-[var(--color-primary)] transition">
+                                Home
+                            </button>
                             <button onClick={() => handleNavigate('/products')} className="hover:text-[var(--color-primary)] transition">
                                 Products
                             </button>
