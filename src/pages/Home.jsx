@@ -5,6 +5,8 @@ import { useTheme } from "../context/ThemeProvider";
 import { useAuth } from "../context/AuthContext";
 import { useNotification } from "../context/NotificationContext";
 import ErrorDisplay from "../components/ErrorDisplay";
+import TextType from "../context/TextType";
+
 
 const HomePage = () => {
   const { colors, theme } = useTheme();
@@ -66,15 +68,26 @@ const HomePage = () => {
           className="mb-6 drop-shadow-lg"
           style={{ color: colors.primary }}
         />
-        <h1
+
+
+        <TextType
+          as="h1"
+          text={["WELCOME TO SHOPCART",
+            "Your One-Stop Shopping Destination",
+            "Exclusive Offers You Can’t Resist",
+            "Fast, Safe, and Reliable Service",
+            "Shop Smarter, Live Better"]}
+          typingSpeed={75}
+          pauseDuration={1500}
+          showCursor={true}
+          cursorCharacter="|"
           className="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight"
           style={{
-            color: colors.primary,
-            textShadow: `2px 2px 8px ${colors.primary}33`,
+            color: "var(--color-primary)",
+            textShadow: `2px 2px 8px var(--color-primary)33`,
           }}
-        >
-          Welcome to ShopCart
-        </h1>
+        />
+
         <p className="text-lg md:text-xl mb-10 max-w-3xl mx-auto opacity-80">
           Your one-stop shop for everything you need. Discover amazing products
           at unbeatable prices and experience seamless shopping.
