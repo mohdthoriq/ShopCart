@@ -77,7 +77,7 @@ const HomePage = () => {
             "Exclusive Offers You Can’t Resist",
             "Fast, Safe, and Reliable Service",
             "Shop Smarter, Live Better"]}
-          typingSpeed={75}
+          typingSpeed={100}
           pauseDuration={1500}
           showCursor={true}
           cursorCharacter="|"
